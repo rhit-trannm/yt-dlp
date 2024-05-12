@@ -7,13 +7,32 @@ from ..utils import (
 
 
 class HearThisAtIE(InfoExtractor):
-    _VALID_URL = r'https?://(?:www\.)?hearthis\.at/(?P<artist>[^/]+)/(?P<title>[A-Za-z0-9\-]+)/?$'
+    _VALID_URL = r'https?://(?:www\.)?hearthis\.at/(?P<artist>[^/]+)/(?P<title>[A-Za-z0-9\-\.]+)/?$'
     _PLAYLIST_URL = 'https://hearthis.at/playlist.php'
-    _TESTS = [{
+    _TESTS = [
+        {
+            'url': 'https://hearthis.at/sithi2/biochip-c-classics-set-wolle-xdp-tresor.core-special-tresor-globus-berlin-13.07.20011/',
+            'md5': 'b45ac60f0c8111eef6ddc10ec232e312',
+            'info_dict': {
+                'id': '7145959',
+                'ext': 'mp3',
+                'display_id': 'sithi2 - biochip-c-classics-set-wolle-xdp-tresor.core-special-tresor-globus-berlin-13.07.20011',
+                'title': f"""sithi2 - Biochip C (Classics Set) & Wolle XDP @ 'Tresor.Core Special', Tresor (Globus, Berlin) - 13.07.2001_1""",
+                'thumbnail': r're:^https?://.*\.jpg$',
+                'timestamp': 1588699409,
+                'description': 'md5:d7ae36a453d78903f6b7ed6eb2fce1f2',
+                'upload_date': '20200505',
+                'view_count': int,
+                'duration': 8986,
+                'genres': ['Other'],
+            }
+        },
+        {
         'url': 'https://hearthis.at/moofi/dr-kreep',
         'md5': 'ab6ec33c8fed6556029337c7885eb4e0',
         'info_dict': {
             'id': '150939',
+            'display_id': 'moofi - dr-kreep',
             'ext': 'wav',
             'title': 'Moofi - Dr. Kreep',
             'thumbnail': r're:^https?://.*\.jpg$',
@@ -21,11 +40,10 @@ class HearThisAtIE(InfoExtractor):
             'description': 'md5:1adb0667b01499f9d27e97ddfd53852a',
             'upload_date': '20150118',
             'view_count': int,
-            'duration': 71,
-            'genre': 'Experimental',
+            'duration': 70,
+            'genres': ['Experimental'],
         }
     }, {
-        # 'download' link redirects to the original webpage
         'url': 'https://hearthis.at/twitchsf/dj-jim-hopkins-totally-bitchin-80s-dance-mix/',
         'md5': '5980ceb7c461605d30f1f039df160c6e',
         'info_dict': {
@@ -38,9 +56,10 @@ class HearThisAtIE(InfoExtractor):
             'thumbnail': r're:^https?://.*\.jpg$',
             'view_count': int,
             'duration': 4360,
-            'genre': 'Dance',
+            'genres': ['Dance'],
         },
-    }]
+    },
+    ]
 
     def _real_extract(self, url):
         m = self._match_valid_url(url)
@@ -79,7 +98,7 @@ class HearThisAtIE(InfoExtractor):
                     'ext': ext,
                     'url': download_url,
                     'acodec': ext,
-                    'quality': 2,  # Usually better quality
+                    'quality': 2,  
                 })
 
         return {
